@@ -6,7 +6,7 @@ break
 else
 VMNAME=$(echo $1 |grep -oE 'director|classroom')
 rht-vmctl start ${VMNAME}
-[[ $WAITIME-gt 300 ]] && break
+[[ $WAITIME -gt 300 ]] && break
 fi
 sleep 60
 WAITIME=$(expr $WAITIME + 5 )
@@ -28,11 +28,11 @@ yum -y install ansible >/dev/null
 ansible-galaxy init examfun
 cat >> examfun/vars/main.yml <<EOF
 staff:
-   -su1
-   -su2
+    -su1
+    -su2
 guests:
-   -sg1
-   -sg2
+    -sg1
+    -sg2
 webclients:
     -sw1
     -sw2
@@ -42,7 +42,7 @@ zip -e -P drone /content/courses/do407/ansible2.3/materials/vault.zip anaconda-k
 for i in server{a..d} workstation; do
   wait_ssh $i
   ssh root@$i "useradd -G wheel ansible && echo redhat | passwd --stdin ansible"
-ssh root@$i "sed -i '/^%wheel/s/ALL$/NOPASSWD: ALL/' /etc/sudoers"
+  ssh root@$i "sed -i '/^%wheel/s/ALL$/NOPASSWD: ALL/' /etc/sudoers"
 done
 ssh root@workstation "mkdir ~ansible/.ssh \
 && cp .ssh/{config,lab_rsa} ~ansible/.ssh \
